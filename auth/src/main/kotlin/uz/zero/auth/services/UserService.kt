@@ -7,6 +7,7 @@ import uz.zero.auth.mappers.UserEntityMapper
 import uz.zero.auth.repositories.BaseRepository
 import uz.zero.auth.repositories.UserRepository
 import uz.zero.auth.entities.User
+import uz.zero.auth.enums.Operation
 import uz.zero.auth.enums.Role
 import uz.zero.auth.exceptions.InsufficientFundsException
 import uz.zero.auth.exceptions.UserNotFoundException
@@ -53,9 +54,9 @@ abstract class BaseService<T : BaseEntity, CreateDto, UpdateDto, ResponseDto>(
 class UserService(
     private val userRepository: UserRepository,
     private val userMapper: UserEntityMapper
-) : BaseService<User, UserCreateRequest, UserUpdateRequest, UserResponse>(userRepository) {
+) : BaseService<User, UserCreateRequest, UserUpdateRequest, UserResponse>(userRepository), AccountService {
 
-    fun userMe(): UserInfoResponse {
+    fun profile(): UserInfoResponse {
         val currentUserId = userId()
         val user = getUser(currentUserId)
         return userMapper.toUserInfo(user)
@@ -92,19 +93,24 @@ class UserService(
 
 
     @Transactional
-    fun withdraw(userId: Long, amount: BigDecimal) {
-        val user = getUser(userId)
-        if (user.balance < amount) {
-            throw InsufficientFundsException("Insufficient funds")
-        }
-        user.balance = user.balance.subtract(amount)
-        userRepository.save(user)
-    }
+    override fun withdraw(userId: Long, amount: BigDecimal) = updateBalance(userId, amount, Operation.WITHDRAW)
 
     @Transactional
-    fun deposit(userId: Long, amount: BigDecimal) {
+    override fun deposit(userId: Long, amount: BigDecimal) = updateBalance(userId, amount, Operation.DEPOSIT)
+
+    private fun updateBalance(userId: Long, amount: BigDecimal, operation: Operation) {
         val user = getUser(userId)
-        user.balance = user.balance.add(amount)
+
+        when (operation) {
+            Operation.DEPOSIT -> user.balance = user.balance.add(amount)
+            Operation.WITHDRAW -> {
+                if (user.balance < amount) {
+                    throw InsufficientFundsException("Insufficient funds")
+                }
+                user.balance = user.balance.subtract(amount)
+            }
+        }
+
         userRepository.save(user)
     }
 }

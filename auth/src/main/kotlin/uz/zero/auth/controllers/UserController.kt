@@ -21,7 +21,7 @@ class UserController(
     fun registerUser(@RequestBody @Valid request: UserCreateRequest): UserResponse = userService.create(request)
 
     @GetMapping("/me")
-    fun userMe(): UserInfoResponse = userService.userMe()
+    fun userMe(): UserInfoResponse = userService.profile()
 
     @GetMapping("/{id}")
     fun getById(@PathVariable id: Long): UserResponse = userService.getById(id)

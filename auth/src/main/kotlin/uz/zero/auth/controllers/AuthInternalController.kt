@@ -12,7 +12,7 @@ class AuthInternalController(
     private val userService: UserService
 ) {
     @GetMapping("/user-info")
-    fun getUserInfo() = userService.userMe()
+    fun getUserInfo() = userService.profile()
 
     @GetMapping("/test")
     fun testUserInfo() = "test info user"
