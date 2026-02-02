@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel>
+      <module name="user" target="17" />
+      <module name="user.main" target="17" />
+      <module name="user.test" target="17" />
+      <module name="uz.vv.payment.main" target="17" />
+      <module name="uz.vv.payment.test" target="17" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="auth" options="-parameters" />
+      <module name="auth.main" options="-parameters" />
+      <module name="auth.test" options="-parameters" />
+      <module name="config" options="-parameters" />
+      <module name="config.main" options="-parameters" />
+      <module name="config.test" options="-parameters" />
+      <module name="gateway" options="-parameters" />
+      <module name="gateway.main" options="-parameters" />
+      <module name="gateway.test" options="-parameters" />
+      <module name="payment" options="-parameters" />
+      <module name="payment.main" options="-parameters" />
+      <module name="payment.test" options="-parameters" />
+      <module name="product" options="-parameters" />
+      <module name="product.main" options="-parameters" />
+      <module name="product.test" options="-parameters" />
+      <module name="user" options="-parameters" />
+      <module name="user.main" options="-parameters" />
+      <module name="user.test" options="-parameters" />
+      <module name="uz.vv.payment.main" options="-parameters" />
+      <module name="uz.vv.payment.test" options="-parameters" />
+    </option>
+  </component>
+</project>
