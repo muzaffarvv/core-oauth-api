@@ -1,7 +1,5 @@
 package uz.zero.auth.services
 
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
-import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import uz.zero.auth.entities.BaseEntity
@@ -33,9 +31,9 @@ abstract class BaseService<T : BaseEntity, CreateDto, UpdateDto, ResponseDto>(
     @Transactional
     open fun update(id: Long, dto: UpdateDto): ResponseDto {
         val entity = getEntity(id) ?: throw RuntimeException("Entity not found with id: $id")
-        val updatedEntity = updateEntity(dto, entity) // DTO dan Entityga o'girish
+        val updatedEntity = updateEntity(dto, entity)
         val savedEntity = repository.save(updatedEntity)
-        return toResponse(savedEntity) // Entitydan Responsega o'girish
+        return toResponse(savedEntity)
     }
 
     @Transactional
@@ -69,6 +67,7 @@ class UserService(
             throw UsernameAlreadyTakenException("Username ${request.username} band!")
         }
         val user = userMapper.toEntity(request, Role.USER)
+        user.balance = "50.00".toBigDecimal()
         val savedUser = repository.save(user)
         return toResponse(savedUser)
     }
